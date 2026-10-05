@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Test File Creation Reminder",
+      "trigger": "PostFileCreate",
+      "description": "Reminds developer to create corresponding test file when new source file is created",
+      "matcher": "src/.*\\.(ts|tsx|js|jsx)$",
+      "action": {
+        "type": "agent",
+        "prompt": "A new source file was created. Remind the developer to create a corresponding test file in tests/unit/ or tests/property/ following the project's testing standards. Good test coverage is essential for code quality."
+      }
+    }
+  ]
+}

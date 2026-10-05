@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Pre-Commit Quality Reminder",
+      "trigger": "PreToolUse",
+      "description": "Reminds developer to run project analysis before committing code changes",
+      "matcher": "execute_pwsh.*git.*commit",
+      "action": {
+        "type": "agent",
+        "prompt": "Before committing, remind the user to run 'npm run analyze -- .' to check project health. If the health score is below 60, suggest reviewing the recommendations before committing."
+      }
+    }
+  ]
+}

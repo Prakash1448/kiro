@@ -1,0 +1,14 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Session Start Intelligence Summary",
+      "trigger": "SessionStart",
+      "description": "Provides project intelligence summary at the start of each session",
+      "action": {
+        "type": "agent",
+        "prompt": "Welcome! This workspace contains the Kiro Project Intelligence Assistant. Key files: src/ (core modules), tests/ (property-based and unit tests), .kiro/specs/ (specifications), .kiro/steering/ (guidelines). Run 'npm run analyze -- ./sample-project' to test the analyzer on the demo project."
+      }
+    }
+  ]
+}

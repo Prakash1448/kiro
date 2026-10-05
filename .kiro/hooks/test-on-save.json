@@ -1,0 +1,16 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Run Tests on Source File Save",
+      "trigger": "PostFileSave",
+      "description": "Automatically runs property-based tests when source files in src/ are saved to ensure code quality",
+      "matcher": "src/.*\\.(ts|js)$",
+      "action": {
+        "type": "command",
+        "command": "npm run test:property",
+        "timeout": 30
+      }
+    }
+  ]
+}
