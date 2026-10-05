@@ -3,7 +3,7 @@
 import { describe, it, expect } from '@jest/globals';
 import fc from 'fast-check';
 import { calculateMetrics, generateRecommendations } from '../../src/metrics/index.js';
-import { ProjectAnalysis, ReviewResult, Metrics } from '../../src/shared/types.js';
+import { ProjectAnalysis, ReviewResult } from '../../src/shared/types.js';
 
 describe('Metrics Property-Based Tests', () => {
   // Helper to create mock project analysis

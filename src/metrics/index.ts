@@ -114,7 +114,7 @@ function calculateHealthScore(input: HealthScoreInput): number {
   return Math.max(0, Math.min(100, Math.round(score)));
 }
 
-export function generateRecommendations(metrics: Metrics, reviews: ReviewResult[]): string[] {
+export function generateRecommendations(metrics: Metrics, _reviews: ReviewResult[]): string[] {
   const recommendations: string[] = [];
   
   // Test coverage recommendations

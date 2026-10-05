@@ -37,11 +37,17 @@ export async function analyzeProject(
     throw new InvalidPathError(`Path does not exist: ${projectPath}`);
   }
   
+  // Build ignore patterns from options
+  const defaultIgnore = ['**/node_modules/**', '**/.git/**', '**/dist/**', '**/build/**', '**/coverage/**'];
+  const ignorePatterns = options.excludePatterns 
+    ? [...defaultIgnore, ...options.excludePatterns]
+    : defaultIgnore;
+  
   // Find all files
   const pattern = `${absolutePath}/**/*`;
   const allFiles = await glob(pattern, { 
     nodir: true,
-    ignore: ['**/node_modules/**', '**/.git/**', '**/dist/**', '**/build/**', '**/coverage/**']
+    ignore: ignorePatterns
   });
   
   // Limit file count for performance

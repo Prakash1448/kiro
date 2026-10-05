@@ -35,36 +35,61 @@ export function detectFunctions(content: string): FunctionInfo[] {
   const functions: FunctionInfo[] = [];
   const lines = content.split('\n');
   
-  // Patterns for different function types
-  const patterns = [
-    // Named function: function name() {}
-    /(?:export\s+)?(?:async\s+)?function\s+(\w+)\s*\(([^)]*)\)/g,
-    // Arrow function: const name = () => {}
-    /(?:export\s+)?const\s+(\w+)\s*=\s*(?:async\s*)?\(([^)]*)\)\s*=>/g,
-    // Class method: methodName() {}
-    /^\s*(?:async\s+)?(\w+)\s*\(([^)]*)\)\s*[:{]/g
-  ];
-  
   lines.forEach((line, index) => {
-    patterns.forEach(pattern => {
-      const matches = line.matchAll(pattern);
-      for (const match of matches) {
-        const name = match[1];
-        const params = match[2] || '';
-        const paramCount = params.trim() ? params.split(',').length : 0;
-        const isAsync = line.includes('async');
-        
-        // Skip test functions themselves
-        if (!name.startsWith('test') && !name.startsWith('it') && !name.startsWith('describe')) {
-          functions.push({
-            name,
-            line: index + 1,
-            isAsync,
-            paramCount
-          });
-        }
+    // Named function: function name() {}
+    const namedFuncPattern = /(?:export\s+)?(?:async\s+)?function\s+(\w+)\s*\(([^)]*)\)/g;
+    let match;
+    while ((match = namedFuncPattern.exec(line)) !== null) {
+      const name = match[1];
+      const params = match[2] || '';
+      const paramCount = params.trim() ? params.split(',').length : 0;
+      const isAsync = line.includes('async');
+      
+      if (name !== 'test' && name !== 'it' && name !== 'describe') {
+        functions.push({
+          name,
+          line: index + 1,
+          isAsync,
+          paramCount
+        });
       }
-    });
+    }
+    
+    // Arrow function: const name = () => {}
+    const arrowFuncPattern = /(?:export\s+)?const\s+(\w+)\s*=\s*(?:async\s*)?\(([^)]*)\)\s*=>/g;
+    while ((match = arrowFuncPattern.exec(line)) !== null) {
+      const name = match[1];
+      const params = match[2] || '';
+      const paramCount = params.trim() ? params.split(',').length : 0;
+      const isAsync = line.includes('async');
+      
+      if (name !== 'test' && name !== 'it' && name !== 'describe') {
+        functions.push({
+          name,
+          line: index + 1,
+          isAsync,
+          paramCount
+        });
+      }
+    }
+    
+    // Class method: methodName() {}
+    const methodPattern = /^\s*(?:async\s+)?(\w+)\s*\(([^)]*)\)\s*[:{]/g;
+    while ((match = methodPattern.exec(line)) !== null) {
+      const name = match[1];
+      const params = match[2] || '';
+      const paramCount = params.trim() ? params.split(',').length : 0;
+      const isAsync = line.includes('async');
+      
+      if (name !== 'test' && name !== 'it' && name !== 'describe') {
+        functions.push({
+          name,
+          line: index + 1,
+          isAsync,
+          paramCount
+        });
+      }
+    }
   });
   
   // Remove duplicates (same function detected by multiple patterns)
@@ -139,14 +164,14 @@ export function suggestTestFilePath(sourceFile: string, projectRoot?: string): s
   // If we have a project root, create relative path
   if (projectRoot) {
     const relativePath = relative(projectRoot, dirname(sourceFile));
-    const cleanPath = relativePath.replace(/^src[\/\\]?/, '');
+    const cleanPath = relativePath.replace(/^src[/\\]?/, '');
     return join('tests', 'unit', cleanPath, `${fileName}.test${ext}`).replace(/\\/g, '/');
   }
   
   // Otherwise, create based on source directory
   const sourceDir = dirname(sourceFile);
   if (sourceDir.includes('src')) {
-    const parts = sourceDir.split(/[\/\\]/);
+    const parts = sourceDir.split(/[/\\]/);
     const srcIndex = parts.findIndex(p => p === 'src');
     const testPath = parts.slice(srcIndex + 1).join('/');
     return `tests/unit/${testPath}/${fileName}.test${ext}`;

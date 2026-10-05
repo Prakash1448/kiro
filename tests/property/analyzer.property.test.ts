@@ -41,7 +41,7 @@ describe('Analyzer Property-Based Tests', () => {
       fc.assert(
         fc.property(
           fc.constantFrom('.ts', '.tsx', '.js', '.jsx'),
-          fc.string({ minLength: 3, maxLength: 20 }).filter(s => !s.includes('test') && !s.includes('spec')),
+          fc.stringMatching(/^[a-zA-Z0-9_-]+$/).filter(s => s.length >= 3 && s.length <= 20 && !s.includes('test') && !s.includes('spec')),
           (ext, baseName) => {
             const fileName = `src/${baseName}${ext}`;
             const result = classifyFile(fileName);

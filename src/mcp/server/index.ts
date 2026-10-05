@@ -11,10 +11,10 @@ import {
   ReadResourceRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
 
-import { generateReport } from '../../src/report/index.js';
-import { reviewFile } from '../../src/reviewer/index.js';
-import { generateTests } from '../../src/test-generator/index.js';
-import { analyzeProject } from '../../src/analyzer/index.js';
+import { generateReport } from '../../report/index.js';
+import { reviewFile } from '../../reviewer/index.js';
+import { generateTests } from '../../test-generator/index.js';
+import { analyzeProject } from '../../analyzer/index.js';
 
 const SERVER_NAME = 'project-intelligence-server';
 const SERVER_VERSION = '1.0.0';
